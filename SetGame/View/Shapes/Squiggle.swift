@@ -2,7 +2,7 @@
 //  Squiggle.swift
 //  SetGame
 //
-//  Created by Gavin Butler on 22-12-2020.
+//  Created by Gavin Butler on 22-12-2020. 
 //
 
 import SwiftUI
