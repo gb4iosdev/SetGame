@@ -21,13 +21,14 @@ struct CardView: View {
         ZStack {
             VStack {
                 ForEach(1..<card.number+1) { _ in
-                    Diamond(rectHeight: setHeightFrom(size)).stroke(Color.green, lineWidth: 3)
+                    Squiggle(rectHeight: setHeightFrom(size)).stroke(Color.green, lineWidth: 3)
                         .padding(.vertical, shapeInset)
                 }
             }
             .padding()
             //.transition(.scale)
-            Text("\(card.id)").foregroundColor(card.number != 2 ? .white : .primary)
+            //Text("\(card.id)").foregroundColor(card.number != 2 ? .white : .primary)
+            Text("\(card.id)").foregroundColor(.primary)
         }
         .cardify(isFaceUp: card.isFaceUp)
         .transition(AnyTransition.identity)

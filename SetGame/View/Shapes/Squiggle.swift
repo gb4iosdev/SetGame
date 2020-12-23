@@ -2,7 +2,7 @@
 //  Squiggle.swift
 //  SetGame
 //
-//  Created by Gavin Butler on 22-12-2020. 
+//  Created by Gavin Butler on 22-12-2020.
 //
 
 import SwiftUI
@@ -14,20 +14,22 @@ struct Squiggle: Shape {
     func path(in rect: CGRect) -> Path {
         
         let width = rect.width
-        let height = rectHeight
-        
-        print("rect.height in the path is \(rect.height)")
-        
+        let height = rectHeight/2
+        let midY = rect.midY
         
         var p = Path()
         
-        p.move(to: CGPoint(x: width*0.04, y: height*0.24))
-        p.addCurve(to: CGPoint(x: width*0.2, y: height*0.765), control1: CGPoint(x: -width*0.02, y: height*0.49), control2: CGPoint(x: 0, y: height*1.2))
-        p.addCurve(to: CGPoint(x: width*0.52, y: height*0.765), control1: CGPoint(x: width*0.3, y: height*0.6), control2: CGPoint(x: width*0.41, y: height*0.6))
-        p.addCurve(to: CGPoint(x: width*0.935, y: height*0.76), control1: CGPoint(x: width*0.63, y: height*0.95), control2: CGPoint(x: width*0.83, y: height*1.05))
-        p.addCurve(to: CGPoint(x: width*0.84, y: height*0.15), control1: CGPoint(x: width*1.01, y: height*0.6), control2: CGPoint(x: width*1.0, y: -height*0.175))
-        p.addCurve(to: CGPoint(x: width*0.47, y: height*0.25), control1: CGPoint(x: width*0.75, y: height*0.25), control2: CGPoint(x: width*0.58, y: height*0.3))
-        p.addCurve(to: CGPoint(x: width*0.04, y: height*0.24), control1: CGPoint(x: width*0.31, y: height*0.1), control2: CGPoint(x: width*0.115, y: -height*0.15))
+        p.move(to: CGPoint(x: width*0.015, y: midY))
+        p.addCurve(to: CGPoint(x: width*0.2, y: midY+height*0.65), control1: CGPoint(x: width*0.05, y: midY+height*0.93), control2: CGPoint(x: width*0.11, y: midY+height*1.03))
+        p.addCurve(to: CGPoint(x: width*0.575, y: midY+height*0.75), control1: CGPoint(x: width*0.32, y: midY+height*0.34), control2: CGPoint(x: width*0.45, y: midY+height*0.5))
+        p.addCurve(to: CGPoint(x: width*0.94, y: midY+height*0.62), control1: CGPoint(x: width*0.75, y: midY+height*1.03), control2: CGPoint(x: width*0.875, y: midY+height*0.94))
+        p.addCurve(to: CGPoint(x: width*0.985, y: midY), control1: CGPoint(x: width*0.965, y: midY+height*0.55), control2: CGPoint(x: width*0.98, y: midY+height*0.34))
+
+        //Now mirror on the horizontal axis:
+        p.addCurve(to: CGPoint(x: width*(1-0.2), y: midY-height*0.65), control1: CGPoint(x: width*(1-0.05), y: midY-height*0.93), control2: CGPoint(x: width*(1-0.11), y: midY-height*1.03))
+        p.addCurve(to: CGPoint(x: width*(1-0.575), y: midY-height*0.75), control1: CGPoint(x: width*(1-0.32), y: midY-height*0.34), control2: CGPoint(x: width*(1-0.45), y: midY-height*0.5))
+        p.addCurve(to: CGPoint(x: width*(1-0.94), y: midY-height*0.62), control1: CGPoint(x: width*(1-0.75), y: midY-height*1.03), control2: CGPoint(x: width*(1-0.875), y: midY-height*0.94))
+        p.addCurve(to: CGPoint(x: width*(1-0.985), y: midY), control1: CGPoint(x: width*(1-0.965), y: midY-height*0.55), control2: CGPoint(x: width*(1-0.98), y: midY-height*0.34))
         p.closeSubpath()
         
         return p
