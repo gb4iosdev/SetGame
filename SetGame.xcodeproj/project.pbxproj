@@ -19,6 +19,7 @@
 		86A96B3F258A4F7C006A8A20 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86A96B3E258A4F7C006A8A20 /* Assets.xcassets */; };
 		86A96B42258A4F7C006A8A20 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86A96B41258A4F7C006A8A20 /* Preview Assets.xcassets */; };
 		86A96B4C258A5104006A8A20 /* SetGameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A96B4B258A5104006A8A20 /* SetGameModel.swift */; };
+		86D3C2A1259360840081EA08 /* SetCapsule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D3C2A0259360840081EA08 /* SetCapsule.swift */; };
 		86D806392592194500236321 /* Squiggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D806382592194500236321 /* Squiggle.swift */; };
 /* End PBXBuildFile section */
 
@@ -37,6 +38,7 @@
 		86A96B41258A4F7C006A8A20 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		86A96B43258A4F7C006A8A20 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		86A96B4B258A5104006A8A20 /* SetGameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetGameModel.swift; sourceTree = "<group>"; };
+		86D3C2A0259360840081EA08 /* SetCapsule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCapsule.swift; sourceTree = "<group>"; };
 		86D806382592194500236321 /* Squiggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Squiggle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -56,6 +58,7 @@
 			children = (
 				86959958258AECCE00FB6751 /* Diamond.swift */,
 				86D806382592194500236321 /* Squiggle.swift */,
+				86D3C2A0259360840081EA08 /* SetCapsule.swift */,
 			);
 			path = Shapes;
 			sourceTree = "<group>";
@@ -205,6 +208,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				86D3C2A1259360840081EA08 /* SetCapsule.swift in Sources */,
 				86D806392592194500236321 /* Squiggle.swift in Sources */,
 				8695995C258AEEB500FB6751 /* CardView.swift in Sources */,
 				86959959258AECCE00FB6751 /* Diamond.swift in Sources */,

@@ -21,16 +21,50 @@ struct CardView: View {
         ZStack {
             VStack {
                 ForEach(1..<card.number+1) { _ in
-                    Squiggle(rectHeight: setHeightFrom(size)).stroke(Color.green, lineWidth: 3)
-                        .padding(.vertical, shapeInset)
+                    ZStack {
+                        if card.shape == .oval {
+                            SetCapsule(rectHeight: setHeightFrom(size)).stroke(card.colour.get(), lineWidth: 3)
+                                .padding(.vertical, shapeInset)
+                            if card.shading != .open {
+                                SetCapsule(rectHeight: setHeightFrom(size)).fill(card.colour.get()).opacity(0.7)
+                            }
+                            if card.shading == .striped {
+                                SetCapsule(rectHeight: setHeightFrom(size)).fill(ImagePaint(image: Image("hatch")))
+                            }
+                        } else if card.shape == .diamond {
+                            Diamond(rectHeight: setHeightFrom(size)).stroke(card.colour.get(), lineWidth: 3)
+                                .padding(.vertical, shapeInset)
+                            if card.shading != .open {
+                                Diamond(rectHeight: setHeightFrom(size)).fill(card.colour.get()).opacity(0.7)
+                            }
+                            if card.shading == .striped {
+                                Diamond(rectHeight: setHeightFrom(size)).fill(ImagePaint(image: Image("hatch")))
+                            }
+                        } else if card.shape == .squiggle {
+                            Squiggle(rectHeight: setHeightFrom(size)).stroke(card.colour.get(), lineWidth: 3)
+                                .padding(.vertical, shapeInset)
+                            if card.shading != .open {
+                                Squiggle(rectHeight: setHeightFrom(size)).fill(card.colour.get()).opacity(0.7)
+                            }
+                            if card.shading == .striped {
+                                Squiggle(rectHeight: setHeightFrom(size)).fill(ImagePaint(image: Image("hatch")))
+                            }
+                        }
+                    }
                 }
             }
             .padding()
             //.transition(.scale)
             //Text("\(card.id)").foregroundColor(card.number != 2 ? .white : .primary)
             Text("\(card.id)").foregroundColor(.primary)
+            Image(systemName: Bool.random() ? "xmark" : "checkmark")
+                .font(.system(size: fontSize(for: size))
+            )
+                .foregroundColor(.gray)
+                .opacity(0.4)
+            RoundedRectangle(cornerRadius: 10).stroke(Color.blue, lineWidth: 3)
         }
-        .cardify(isFaceUp: card.isFaceUp)
+        .cardify(isFaceUp: card.isFaceUp, isSelected: card.number.isEven ? true : false)
         .transition(AnyTransition.identity)
 
     }

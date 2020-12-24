@@ -12,6 +12,7 @@ struct Cardify: ViewModifier {
     //var rotation: Double
     
     var isFaceUp: Bool
+    var isSelected: Bool
     
 //    var animatableData: Double {
 //        get { rotation }
@@ -26,7 +27,7 @@ struct Cardify: ViewModifier {
         ZStack {
             Group {
                 RoundedRectangle(cornerRadius: cornerRadius).fill(Color.white)
-                RoundedRectangle(cornerRadius: cornerRadius).stroke(lineWidth: edgeLineWidth)
+                RoundedRectangle(cornerRadius: cornerRadius).stroke(lineWidth: isSelected ? 5 : 1)
                 content
             }
                 .opacity(isFaceUp ? 1 : 0)
@@ -38,12 +39,12 @@ struct Cardify: ViewModifier {
     
     //MARK: - Drawing Constants
     private let cornerRadius: CGFloat = 10
-    private let edgeLineWidth: CGFloat = 1
     
 }
 
 extension View {
-    func cardify(isFaceUp: Bool) -> some View {
-        self.modifier(Cardify(isFaceUp: isFaceUp))
+    func cardify(isFaceUp: Bool, isSelected: Bool) -> some View {
+        self.modifier(Cardify(isFaceUp: isFaceUp, isSelected: isSelected))
     }
 }
+

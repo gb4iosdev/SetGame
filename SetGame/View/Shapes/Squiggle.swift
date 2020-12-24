@@ -6,6 +6,10 @@
 //
 
 import SwiftUI
+///  Draws the squiggle captured in the Affinity Designer file squiggle.afdesign in the assets directory
+///  Affinity designer provides a visual of the control point locations for each main point on the curve
+///  and using a grid allows for these control point locations to be quantified per the constants below.
+///  Note use of the (1-number) and +/- height below, which leverages the semi-symmetrical nature of the shape.
 
 struct Squiggle: Shape {
     
@@ -13,9 +17,9 @@ struct Squiggle: Shape {
 
     func path(in rect: CGRect) -> Path {
         
-        let width = rect.width
-        let height = rectHeight/2
-        let midY = rect.midY
+        let width = rect.width      //Width of the rectangle passed in (for typing convenience only)
+        let height = rectHeight/2   //Shape is symmetrical when flipped twice, so easier to express height as half the overall rectangle height.
+        let midY = rect.midY        //(for typing convenience only)
         
         var p = Path()
         

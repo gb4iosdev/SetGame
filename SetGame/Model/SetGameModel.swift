@@ -5,7 +5,7 @@
 //  Created by Gavin Butler on 16-12-2020.
 //
 
-import Foundation
+import SwiftUI
 
 struct SetGameModel {
     private(set) var deck: Array<Card>
@@ -15,6 +15,8 @@ struct SetGameModel {
     init() {
         self.deck = [Card]()
         var cardId: Int = 0
+        
+        //Build the deck of 81 cards
         for i in 1...3 {
             for shape in ShapeType.allCases {
                 for shade in ShadeType.allCases {
@@ -43,6 +45,7 @@ struct SetGameModel {
         let colour: ShapeColour
         
         var isFaceUp: Bool = true
+        var isSelected: Bool = false
         
         func description() -> String {
             return """
@@ -65,6 +68,14 @@ struct SetGameModel {
     
     enum ShapeColour: CaseIterable {
         case green, purple, red
+        
+        func get() -> Color {
+            switch self {
+            case .green: return Color.green
+            case .purple: return Color.purple
+            case .red: return Color.red
+            }
+        }
     }
     
     //Returns true if the cards passed in constitute a deck
@@ -89,4 +100,5 @@ struct SetGameModel {
         return feature1 == feature2 && feature2 == feature3
             || feature1 != feature2 && feature2 != feature2 && feature1 != feature3
     }
+    
 }

@@ -24,5 +24,10 @@ extension Array {
     var only: Element? {
         count == 1 ? first : nil
     }
-    
+}
+
+extension Int {
+    var isEven: Bool {
+        self % 2 == 0
+    }
 }
