@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		866FA1762596C68000C9864F /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866FA1752596C68000C9864F /* Theme.swift */; };
+		866FA1792596C9B000C9864F /* ShapeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866FA1782596C9B000C9864F /* ShapeType.swift */; };
+		866FA17C2596CB4400C9864F /* ShadeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866FA17B2596CB4400C9864F /* ShadeType.swift */; };
+		866FA17F2596CB9200C9864F /* ShapeColour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 866FA17E2596CB9200C9864F /* ShapeColour.swift */; };
 		86959950258AE34200FB6751 /* GridLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8695994F258AE34200FB6751 /* GridLayout.swift */; };
 		86959956258AEAE500FB6751 /* Cardify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86959955258AEAE500FB6751 /* Cardify.swift */; };
 		86959959258AECCE00FB6751 /* Diamond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86959958258AECCE00FB6751 /* Diamond.swift */; };
@@ -24,6 +28,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		866FA1752596C68000C9864F /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		866FA1782596C9B000C9864F /* ShapeType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeType.swift; sourceTree = "<group>"; };
+		866FA17B2596CB4400C9864F /* ShadeType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadeType.swift; sourceTree = "<group>"; };
+		866FA17E2596CB9200C9864F /* ShapeColour.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeColour.swift; sourceTree = "<group>"; };
 		8695994F258AE34200FB6751 /* GridLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridLayout.swift; sourceTree = "<group>"; };
 		86959955258AEAE500FB6751 /* Cardify.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cardify.swift; sourceTree = "<group>"; };
 		86959958258AECCE00FB6751 /* Diamond.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diamond.swift; sourceTree = "<group>"; };
@@ -80,6 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				8695995E258AEFA600FB6751 /* SetGame.swift */,
+				866FA1752596C68000C9864F /* Theme.swift */,
 			);
 			path = "View Model";
 			sourceTree = "<group>";
@@ -135,6 +144,9 @@
 			isa = PBXGroup;
 			children = (
 				86A96B4B258A5104006A8A20 /* SetGameModel.swift */,
+				866FA1782596C9B000C9864F /* ShapeType.swift */,
+				866FA17B2596CB4400C9864F /* ShadeType.swift */,
+				866FA17E2596CB9200C9864F /* ShapeColour.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -209,9 +221,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				86D3C2A1259360840081EA08 /* SetCapsule.swift in Sources */,
+				866FA17F2596CB9200C9864F /* ShapeColour.swift in Sources */,
 				86D806392592194500236321 /* Squiggle.swift in Sources */,
 				8695995C258AEEB500FB6751 /* CardView.swift in Sources */,
 				86959959258AECCE00FB6751 /* Diamond.swift in Sources */,
+				866FA1762596C68000C9864F /* Theme.swift in Sources */,
+				866FA17C2596CB4400C9864F /* ShadeType.swift in Sources */,
+				866FA1792596C9B000C9864F /* ShapeType.swift in Sources */,
 				86A96B3D258A4F7A006A8A20 /* SetGameView.swift in Sources */,
 				8695995F258AEFA600FB6751 /* SetGame.swift in Sources */,
 				86A96B3B258A4F7A006A8A20 /* SetGameApp.swift in Sources */,

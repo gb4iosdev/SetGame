@@ -23,28 +23,28 @@ struct CardView: View {
                 ForEach(1..<card.number+1) { _ in
                     ZStack {
                         if card.shape == .oval {
-                            SetCapsule(rectHeight: setHeightFrom(size)).stroke(card.colour.get(), lineWidth: 3)
+                            SetCapsule(rectHeight: setHeightFrom(size)).stroke(Theme.colourFor(card.colour), lineWidth: 3)
                                 .padding(.vertical, shapeInset)
                             if card.shading != .open {
-                                SetCapsule(rectHeight: setHeightFrom(size)).fill(card.colour.get()).opacity(0.7)
+                                SetCapsule(rectHeight: setHeightFrom(size)).fill(Theme.colourFor(card.colour)).opacity(0.7)
                             }
                             if card.shading == .striped {
                                 SetCapsule(rectHeight: setHeightFrom(size)).fill(ImagePaint(image: Image("hatch")))
                             }
                         } else if card.shape == .diamond {
-                            Diamond(rectHeight: setHeightFrom(size)).stroke(card.colour.get(), lineWidth: 3)
+                            Diamond(rectHeight: setHeightFrom(size)).stroke(Theme.colourFor(card.colour), lineWidth: 3)
                                 .padding(.vertical, shapeInset)
                             if card.shading != .open {
-                                Diamond(rectHeight: setHeightFrom(size)).fill(card.colour.get()).opacity(0.7)
+                                Diamond(rectHeight: setHeightFrom(size)).fill(Theme.colourFor(card.colour)).opacity(0.7)
                             }
                             if card.shading == .striped {
                                 Diamond(rectHeight: setHeightFrom(size)).fill(ImagePaint(image: Image("hatch")))
                             }
                         } else if card.shape == .squiggle {
-                            Squiggle(rectHeight: setHeightFrom(size)).stroke(card.colour.get(), lineWidth: 3)
+                            Squiggle(rectHeight: setHeightFrom(size)).stroke(Theme.colourFor(card.colour), lineWidth: 3)
                                 .padding(.vertical, shapeInset)
                             if card.shading != .open {
-                                Squiggle(rectHeight: setHeightFrom(size)).fill(card.colour.get()).opacity(0.7)
+                                Squiggle(rectHeight: setHeightFrom(size)).fill(Theme.colourFor(card.colour)).opacity(0.7)
                             }
                             if card.shading == .striped {
                                 Squiggle(rectHeight: setHeightFrom(size)).fill(ImagePaint(image: Image("hatch")))
@@ -57,14 +57,14 @@ struct CardView: View {
             //.transition(.scale)
             //Text("\(card.id)").foregroundColor(card.number != 2 ? .white : .primary)
             Text("\(card.id)").foregroundColor(.primary)
-            Image(systemName: Bool.random() ? "xmark" : "checkmark")
+            Image(systemName: card.isPartOfSet ? "checkmark" : "xmark")
                 .font(.system(size: fontSize(for: size))
             )
                 .foregroundColor(.gray)
-                .opacity(0.4)
+                .opacity(card.isSetTested ? 0.4 : 0)
             RoundedRectangle(cornerRadius: 10).stroke(Color.blue, lineWidth: 3)
         }
-        .cardify(isFaceUp: card.isFaceUp, isSelected: card.number.isEven ? true : false)
+        .cardify(isFaceUp: card.isFaceUp, isSelected: card.isSelected)
         .transition(AnyTransition.identity)
 
     }
@@ -81,7 +81,8 @@ struct CardView: View {
 }
 
 struct CardView_Previews: PreviewProvider {
-    static var card = SetGameModel().activeCards.first
+    static let theme = Theme.standard
+    static var card = SetGameModel(shapes: theme.shapes, shades: theme.shades, colours: theme.colours).dealtCards.first
     
     static var previews: some View {
         return CardView(card: card!)

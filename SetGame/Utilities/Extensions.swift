@@ -18,11 +18,17 @@ extension Array where Element: Identifiable {   //Constrains and Gains
         
         return nil
     }
-}
-
-extension Array {
+    
     var only: Element? {
         count == 1 ? first : nil
+    }
+    
+    func firstElements(_ numberOfElements: Int) -> [Element] {
+        if self.count <= numberOfElements {
+            return self
+        } else {
+            return Array(self.prefix(upTo: numberOfElements))
+        }
     }
 }
 

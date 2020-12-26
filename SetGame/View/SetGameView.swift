@@ -15,6 +15,11 @@ struct SetGameView: View {
         
         Grid(viewModel.activeCards) { card in
             CardView(card: card)
+                .onTapGesture {
+                    withAnimation(.easeOut) {
+                        viewModel.choose(card: card)
+                    }
+                }
                 .padding(5)
         }
         //.foregroundColor(.orange)

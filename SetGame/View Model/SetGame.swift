@@ -9,9 +9,10 @@ import SwiftUI
 
 class SetGame: ObservableObject {
     @Published private var model: SetGameModel = SetGame.createSetGame()
+    static var theme = Theme.standard
     
     private static func createSetGame() -> SetGameModel {
-        return SetGameModel()
+        return SetGameModel(shapes: theme.shapes, shades: theme.shades, colours: theme.colours)
     }
     
     //MARK: - Access to the Model
@@ -21,6 +22,10 @@ class SetGame: ObservableObject {
     }
     
     var activeCards: Array<SetGameModel.Card> {
-        model.activeCards
+        model.dealtCards
+    }
+    
+    func choose(card: SetGameModel.Card) {
+        model.choose(card: card)
     }
 }
