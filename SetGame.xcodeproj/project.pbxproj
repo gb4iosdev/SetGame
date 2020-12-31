@@ -75,8 +75,8 @@
 			isa = PBXGroup;
 			children = (
 				86A96B3C258A4F7A006A8A20 /* SetGameView.swift */,
-				8695994F258AE34200FB6751 /* GridLayout.swift */,
 				869CF97F258C20700088B450 /* Grid.swift */,
+				8695994F258AE34200FB6751 /* GridLayout.swift */,
 				8695995B258AEEB500FB6751 /* CardView.swift */,
 				86959955258AEAE500FB6751 /* Cardify.swift */,
 				8662161F2590236400337DAF /* Shapes */,

@@ -10,12 +10,10 @@ import SwiftUI
 ///  Could probably have used SwiftUI's capsule view, but using Shape to be consistent
 
 struct SetCapsule: Shape {
-    
-    let rectHeight: CGFloat
 
     func path(in rect: CGRect) -> Path {
         
-        let height = rectHeight/2
+        let height = rect.height/2
         let midY = rect.midY
         
         var p = Path()

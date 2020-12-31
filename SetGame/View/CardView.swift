@@ -20,40 +20,45 @@ struct CardView: View {
     private func body(for size: CGSize) -> some View {
         ZStack {
             VStack {
+                Spacer()
                 ForEach(1..<card.number+1) { _ in
+                    Spacer(minLength: setSpacerHeight(size))
                     ZStack {
                         if card.shape == .oval {
-                            SetCapsule(rectHeight: setHeightFrom(size)).stroke(Theme.colourFor(card.colour), lineWidth: 3)
+                            SetCapsule().stroke(Theme.colourFor(card.colour), lineWidth: strokeLineWidth(for: size))
                                 .padding(.vertical, shapeInset)
                             if card.shading != .open {
-                                SetCapsule(rectHeight: setHeightFrom(size)).fill(Theme.colourFor(card.colour)).opacity(0.7)
+                                SetCapsule().fill(Theme.colourFor(card.colour)).opacity(0.5)
                             }
                             if card.shading == .striped {
-                                SetCapsule(rectHeight: setHeightFrom(size)).fill(ImagePaint(image: Image("hatch")))
+                                SetCapsule().fill(ImagePaint(image: Image("hatch"))).foregroundColor(Theme.colourFor(card.colour))
                             }
                         } else if card.shape == .diamond {
-                            Diamond(rectHeight: setHeightFrom(size)).stroke(Theme.colourFor(card.colour), lineWidth: 3)
+                            Diamond().stroke(Theme.colourFor(card.colour), lineWidth: strokeLineWidth(for: size))
                                 .padding(.vertical, shapeInset)
                             if card.shading != .open {
-                                Diamond(rectHeight: setHeightFrom(size)).fill(Theme.colourFor(card.colour)).opacity(0.7)
+                                Diamond().fill(Theme.colourFor(card.colour)).opacity(0.5)
                             }
                             if card.shading == .striped {
-                                Diamond(rectHeight: setHeightFrom(size)).fill(ImagePaint(image: Image("hatch")))
+                                Diamond().fill(ImagePaint(image: Image("hatch"))).foregroundColor(Theme.colourFor(card.colour))
                             }
                         } else if card.shape == .squiggle {
-                            Squiggle(rectHeight: setHeightFrom(size)).stroke(Theme.colourFor(card.colour), lineWidth: 3)
+                            Squiggle().stroke(Theme.colourFor(card.colour), lineWidth: strokeLineWidth(for: size))
                                 .padding(.vertical, shapeInset)
                             if card.shading != .open {
-                                Squiggle(rectHeight: setHeightFrom(size)).fill(Theme.colourFor(card.colour)).opacity(0.7)
+                                Squiggle().fill(Theme.colourFor(card.colour)).opacity(0.5)
                             }
                             if card.shading == .striped {
-                                Squiggle(rectHeight: setHeightFrom(size)).fill(ImagePaint(image: Image("hatch")))
+                                Squiggle().fill(ImagePaint(image: Image("hatch"))).foregroundColor(Theme.colourFor(card.colour))
                             }
                         }
                     }
+                    Spacer(minLength: setSpacerHeight(size))
                 }
+                Spacer()
             }
-            .padding()
+            .padding(.horizontal, horizontalPadding(for: size))
+            
             //.transition(.scale)
             //Text("\(card.id)").foregroundColor(card.number != 2 ? .white : .primary)
             Text("\(card.id)").foregroundColor(.primary)
@@ -69,14 +74,31 @@ struct CardView: View {
 
     }
     
-    func setHeightFrom(_ size: CGSize) -> CGFloat {
-        return size.height/CGFloat(3)-shapeInset*2
+    func setSpacerHeight(_ size: CGSize) -> CGFloat {
+        switch card.number {
+        case 1:
+            return CGFloat(size.height / 3)
+        case 2:
+            return CGFloat(size.height / 10)
+        default:
+            return CGFloat(size.height / 20)
+        }
     }
     
     //MARK: - Drawing Constants
-    private let shapeInset: CGFloat = 10
+    private let shapeInset: CGFloat = 0    //Sets vertical spacing between shapes
     private func fontSize(for size: CGSize) -> CGFloat {
         min(size.width, size.height) * 0.7
+    }
+    private func horizontalPadding(for size: CGSize) -> CGFloat {
+        size.width/10
+    }
+    private func strokeLineWidth(for size: CGSize) -> CGFloat {
+        switch size.width {
+            case 0..<70: return CGFloat(1)
+            case 70..<120: return CGFloat(2)
+            default: return CGFloat(3)
+        }
     }
 }
 

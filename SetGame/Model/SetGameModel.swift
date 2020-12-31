@@ -36,61 +36,142 @@ struct SetGameModel {
         
         //Deal the first 12 cards
         self.dealtCards = [Card]()
-        for _ in 0...11 {
+        dealCards(12)
+    }
+    
+    mutating func dealCards(_ numberToDeal: Int) {
+        //Must have cards to deal from:
+        guard deck.count > 0 else { return }
+        
+        let dealNumber = min(numberToDeal, deck.count)
+        for _ in 1...dealNumber {
             dealtCards.append(deck.removeFirst())
+        }
+    }
+    
+    //*** Method only required to test card resizing UI - remove before completion ***//
+    mutating func removeCards(_ numberToRemove: Int) {
+        if dealtCards.count >= numberToRemove {
+            for _ in 0..<numberToRemove {
+                deck.append(dealtCards.removeFirst())
+            }
         }
     }
     
     mutating func choose(card: Card) {
         
-        guard let cardIndex = dealtCards.firstIndex(matching: card) else { return }
-        
-        dealtCards[cardIndex].isSelected.toggle()
-        
-        if selectedCards.count == 3 { //Time to test for a set
+        if selectedCards.count == 3 {
+            //If there is already a set made then this tap removes those cards and deals additional in:
             if makesASet(cards: selectedCards) {
-                dealtCards[dealtCards.firstIndex(matching: selectedCards[0])!].isPartOfSet = true
-                dealtCards[dealtCards.firstIndex(matching: selectedCards[1])!].isPartOfSet = true
-                dealtCards[dealtCards.firstIndex(matching: selectedCards[2])!].isPartOfSet = true
-            } else {
-                dealtCards[dealtCards.firstIndex(matching: selectedCards[0])!].isPartOfSet = false
-                dealtCards[dealtCards.firstIndex(matching: selectedCards[1])!].isPartOfSet = false
-                dealtCards[dealtCards.firstIndex(matching: selectedCards[2])!].isPartOfSet = false
+                removeSelectedFromPlay()
+                dealCards(3)
+            } else {    //If 3 cards have been selected that are not a set deselect those cards
+                deselectAll()
             }
-            dealtCards[dealtCards.firstIndex(matching: selectedCards[0])!].isSetTested = true
-            dealtCards[dealtCards.firstIndex(matching: selectedCards[1])!].isSetTested = true
-            dealtCards[dealtCards.firstIndex(matching: selectedCards[2])!].isSetTested = true
         }
         
+        markSelected(card)
         
+        //If this is the third card selected: Time to test for a set
+        if selectedCards.count == 3 {
+            if makesASet(cards: selectedCards) {
+                markSelectedCards(isPartOfSet: true)    //User has just chosen the 3rd card and made a set - simply mark the cards as being part of a set
+            } else {
+                markSelectedCards(isPartOfSet: false)
+            }
+            markSelectedCards(isSetTested: true)
+        }
+    }
+    
+    //Triggered by the 'Deal 3' Button - always deals 3 cards, but first checks for a set and removes those cards if a set is made
+    mutating func dealCardsWithCheck() {
+        //If there is already a set made then this button removes those cards and deals additional in:
+        if selectedCards.count == 3 && makesASet(cards: selectedCards) {
+            removeSelectedFromPlay()
+        }
+        dealCards(3)
+    }
+    
+    mutating func deselectAll() {
+        for i in 0..<dealtCards.count {
+            dealtCards[i].isSelected = false
+            dealtCards[i].isSetTested = false
+        }
+    }
+    
+    mutating func removeSelectedFromPlay() {
+        var selectedCardIds = [Int]()
+        for card in selectedCards {
+            selectedCardIds.append(card.id)
+        }
+        for card in dealtCards {
+            if selectedCardIds.contains(card.id) {
+                dealtCards.remove(at: dealtCards.firstIndex(matching: card)!)
+            }
+        }
+    }
+    
+    mutating func markSelected(_ card: Card) {
+        if let index = dealtCards.firstIndex(matching: card) {
+            dealtCards[index].isSelected.toggle()
+        }
+    }
+    
+    mutating func markSelectedCards(isPartOfSet: Bool) {
+        for card in selectedCards {
+            dealtCards[dealtCards.firstIndex(matching: card)!].isPartOfSet = isPartOfSet
+        }
+    }
+    
+    mutating func markSelectedCards(isSetTested: Bool) {
+        for card in selectedCards {
+            dealtCards[dealtCards.firstIndex(matching: card)!].isSetTested = isSetTested
+        }
+    }
+    
+    //Determine if there is a set in the currently dealt cards
+    mutating func findASet() {
+        //Must have cards dealt
+        guard dealtCards.count >= 3 else { return }
+        
+        for i in 0..<dealtCards.count-2 {
+            for j in i+1..<dealtCards.count-1 {
+                for k in j+1..<dealtCards.count {
+                    if makesASet(cards: [dealtCards[i], dealtCards[j], dealtCards[k]]) {
+                        dealtCards[i].isSetTested = true
+                        dealtCards[i].isPartOfSet = true
+                        dealtCards[j].isSetTested = true
+                        dealtCards[j].isPartOfSet = true
+                        dealtCards[k].isSetTested = true
+                        dealtCards[k].isPartOfSet = true
+                        print("Set found for cards Id's: \(dealtCards[i].id), \(dealtCards[j].id) & \(dealtCards[k].id)")
+                        return
+                    }
+                }
+            }
+        }
     }
     
     func makesASet(cards: [Card]) -> Bool {
-        print("Checking for a set!!")
         //Must be comparing 3 cards
         guard cards.count == 3 else { return false }
         
         //They all have the same number or have three different numbers.
         guard featureAllSameOrDifferent(cards[0].number, cards[1].number, cards[2].number) else {
-            print("number of shapes is not all the same or different")
             return false }
         
         //They all have the same shape or have three different shapes.
         guard featureAllSameOrDifferent(cards[0].shape, cards[1].shape, cards[2].shape) else {
-            print("shape type is not all the same or different")
             return false }
         
         //They all have the same shading or have three different shadings.
         guard featureAllSameOrDifferent(cards[0].shading, cards[1].shading, cards[2].shading) else {
-            print("shading is not all the same or different")
             return false }
         
         //They all have the same color or have three different colors.
         guard featureAllSameOrDifferent(cards[0].colour, cards[1].colour, cards[2].colour) else {
-            print("colour is not all the same or different")
             return false }
         
-        print("Found a set!!")
         return true
     }
     

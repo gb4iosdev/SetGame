@@ -12,13 +12,11 @@ import SwiftUI
 ///  Note use of the (1-number) and +/- height below, which leverages the semi-symmetrical nature of the shape.
 
 struct Squiggle: Shape {
-    
-    let rectHeight: CGFloat
 
     func path(in rect: CGRect) -> Path {
         
         let width = rect.width      //Width of the rectangle passed in (for typing convenience only)
-        let height = rectHeight/2   //Shape is symmetrical when flipped twice, so easier to express height as half the overall rectangle height.
+        let height = rect.height/2   //Shape is symmetrical when flipped twice, so easier to express height as half the overall rectangle height.
         let midY = rect.midY        //(for typing convenience only)
         
         var p = Path()

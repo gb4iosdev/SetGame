@@ -28,4 +28,21 @@ class SetGame: ObservableObject {
     func choose(card: SetGameModel.Card) {
         model.choose(card: card)
     }
+    
+    func checkAndDeal3() {
+        model.dealCardsWithCheck()
+    }
+    
+    //***Used only for testing - remove later***
+    func removeCards(_ numberToRemove: Int) {
+        model.removeCards(numberToRemove)
+    }
+    
+    func restart() {
+        self.model = SetGame.createSetGame()
+    }
+    
+    func findASet() {
+        model.findASet()
+    }
 }
