@@ -34,9 +34,8 @@ struct SetGameModel {
         }
         deck.shuffle()
         
-        //Deal the first 12 cards
+        //Set up the dealtCardsDeck:
         self.dealtCards = [Card]()
-        dealCards(12)
     }
     
     mutating func dealCards(_ numberToDeal: Int) {

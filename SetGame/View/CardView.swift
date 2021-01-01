@@ -53,6 +53,9 @@ struct CardView: View {
                             }
                         }
                     }
+                    //.rotationEffect(.degrees(card.isSelected ? 270 : 0))
+                    .rotation3DEffect(.degrees(card.isPartOfSet ? 180 : 0), axis: (x: 1.0, y: 0.0, z: 0.0))
+                    .animation(.linear(duration: 1))
                     Spacer(minLength: setSpacerHeight(size))
                 }
                 Spacer()
@@ -70,7 +73,7 @@ struct CardView: View {
             RoundedRectangle(cornerRadius: 10).stroke(Color.blue, lineWidth: 3)
         }
         .cardify(isFaceUp: card.isFaceUp, isSelected: card.isSelected)
-        .transition(AnyTransition.identity)
+        //.transition(AnyTransition.identity)
 
     }
     

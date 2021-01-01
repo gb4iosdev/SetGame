@@ -16,12 +16,15 @@ struct SetGameView: View {
             Grid(viewModel.activeCards) { card in
                 CardView(card: card)
                     .onTapGesture {
-                        withAnimation(.easeOut) {
+                        withAnimation(.easeOut(duration: 1)) {
                             viewModel.choose(card: card)
                         }
                     }
                     .padding(5)
                     .aspectRatio(0.75, contentMode: .fit)
+                    //.transition(.scale)
+                    .transition(.offset(CGSize(width: CGFloat.random(in: -40...0)*20, height: CGFloat.random(in: -40...0)*20)))
+                    .animation(.linear(duration: 1))
             }
             HStack {
                 Button(action: {
@@ -38,7 +41,9 @@ struct SetGameView: View {
                 .disabled(viewModel.deck.isEmpty)
                 .opacity(!viewModel.deck.isEmpty ? 1.0 : 0.75)
                 Button(action: {
-                    viewModel.restart()
+                    withAnimation(.easeInOut(duration: 1)) {
+                        viewModel.restart()
+                    }
                 }, label: {
                     Text("New Game")
                         .font(.system(size: 18, weight: .medium, design: .default))
@@ -63,7 +68,11 @@ struct SetGameView: View {
                 })
             }
         }
-        //.foregroundColor(.orange)
+        .onAppear {
+            withAnimation(.easeInOut(duration: 1)) {
+                viewModel.dealInitialCards()
+            }
+        }
         
     }
 }

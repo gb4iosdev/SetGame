@@ -33,6 +33,11 @@ class SetGame: ObservableObject {
         model.dealCardsWithCheck()
     }
     
+    //Deal the 12 initial cards
+    func dealInitialCards() {
+        model.dealCards(12)
+    }
+    
     //***Used only for testing - remove later***
     func removeCards(_ numberToRemove: Int) {
         model.removeCards(numberToRemove)
@@ -40,6 +45,7 @@ class SetGame: ObservableObject {
     
     func restart() {
         self.model = SetGame.createSetGame()
+        self.dealInitialCards()
     }
     
     func findASet() {
