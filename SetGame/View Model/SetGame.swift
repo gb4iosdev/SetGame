@@ -38,6 +38,10 @@ class SetGame: ObservableObject {
         model.dealCards(12)
     }
     
+    func flipCards() {
+        model.flipCards()
+    }
+    
     //***Used only for testing - remove later***
     func removeCards(_ numberToRemove: Int) {
         model.removeCards(numberToRemove)

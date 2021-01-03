@@ -23,47 +23,15 @@ struct CardView: View {
                 Spacer()
                 ForEach(1..<card.number+1) { _ in
                     Spacer(minLength: setSpacerHeight(size))
-                    ZStack {
-                        if card.shape == .oval {
-                            SetCapsule().stroke(Theme.colourFor(card.colour), lineWidth: strokeLineWidth(for: size))
-                                .padding(.vertical, shapeInset)
-                            if card.shading != .open {
-                                SetCapsule().fill(Theme.colourFor(card.colour)).opacity(0.5)
-                            }
-                            if card.shading == .striped {
-                                SetCapsule().fill(ImagePaint(image: Image("hatch"))).foregroundColor(Theme.colourFor(card.colour))
-                            }
-                        } else if card.shape == .diamond {
-                            Diamond().stroke(Theme.colourFor(card.colour), lineWidth: strokeLineWidth(for: size))
-                                .padding(.vertical, shapeInset)
-                            if card.shading != .open {
-                                Diamond().fill(Theme.colourFor(card.colour)).opacity(0.5)
-                            }
-                            if card.shading == .striped {
-                                Diamond().fill(ImagePaint(image: Image("hatch"))).foregroundColor(Theme.colourFor(card.colour))
-                            }
-                        } else if card.shape == .squiggle {
-                            Squiggle().stroke(Theme.colourFor(card.colour), lineWidth: strokeLineWidth(for: size))
-                                .padding(.vertical, shapeInset)
-                            if card.shading != .open {
-                                Squiggle().fill(Theme.colourFor(card.colour)).opacity(0.5)
-                            }
-                            if card.shading == .striped {
-                                Squiggle().fill(ImagePaint(image: Image("hatch"))).foregroundColor(Theme.colourFor(card.colour))
-                            }
-                        }
-                    }
-                    //.rotationEffect(.degrees(card.isSelected ? 270 : 0))
-                    .rotation3DEffect(.degrees(card.isPartOfSet ? 180 : 0), axis: (x: 1.0, y: 0.0, z: 0.0))
-                    .animation(.linear(duration: 1))
+                    ShapeView(card: card, strokeWidth: strokeLineWidth(for: size))
+                        //.rotation3DEffect(.degrees(card.isPartOfSet ? 360 : 0), axis: (x: 1.0, y: 0.0, z: 0.0))
+                        //.animation(Animation.linear(duration: 1))
                     Spacer(minLength: setSpacerHeight(size))
                 }
                 Spacer()
             }
             .padding(.horizontal, horizontalPadding(for: size))
             
-            //.transition(.scale)
-            //Text("\(card.id)").foregroundColor(card.number != 2 ? .white : .primary)
             Text("\(card.id)").foregroundColor(.primary)
             Image(systemName: card.isPartOfSet ? "checkmark" : "xmark")
                 .font(.system(size: fontSize(for: size))
@@ -72,9 +40,7 @@ struct CardView: View {
                 .opacity(card.isSetTested ? 0.4 : 0)
             RoundedRectangle(cornerRadius: 10).stroke(Color.blue, lineWidth: 3)
         }
-        .cardify(isFaceUp: card.isFaceUp, isSelected: card.isSelected)
-        //.transition(AnyTransition.identity)
-
+        .cardify(isFaceUp: card.isFaceUp, isSelected: card.isSelected, colour: card.colour)
     }
     
     func setSpacerHeight(_ size: CGSize) -> CGFloat {

@@ -13,6 +13,7 @@ struct Cardify: ViewModifier {
     
     var isFaceUp: Bool
     var isSelected: Bool
+    var colour: ShapeColour
     
 //    var animatableData: Double {
 //        get { rotation }
@@ -25,16 +26,29 @@ struct Cardify: ViewModifier {
     
     func body(content: Content) -> some View {
         ZStack {
-            Group {
-                RoundedRectangle(cornerRadius: cornerRadius).fill(Color.white)
-                RoundedRectangle(cornerRadius: cornerRadius).stroke(lineWidth: isSelected ? 5 : 1)
-                content
+            if isFaceUp {
+                Group {
+                    RoundedRectangle(cornerRadius: cornerRadius).fill(Color.white)
+                    RoundedRectangle(cornerRadius: cornerRadius).stroke(lineWidth: isSelected ? 5 : 1)
+                        
+                    content
+                    //.rotation3DEffect(Angle.degrees(180), axis: (x: 0, y: 1, z: 0))
+                        
+                }
+                
+//                .rotationEffect(.degrees(isFaceUp ? 270 : 0))
+//                .animation(Animation.linear(duration: 3).delay(0).repeatForever())
+                
+            } else {
+                RoundedRectangle(cornerRadius: cornerRadius).fill(Theme.colourFor(colour))
+                    //.transition(.opacity)
+                    //.animation(.linear(duration: 3))
             }
-                .opacity(isFaceUp ? 1 : 0)
-            RoundedRectangle(cornerRadius: cornerRadius).fill()
-                .opacity(isFaceUp ? 0 : 1)
         }
-        //.rotation3DEffect(Angle.degrees(rotation), axis: (x: 0, y: 1, z: 0))
+        .rotation3DEffect(Angle.degrees(isFaceUp ? 180 : 0), axis: (x: 0, y: 1, z: 0))
+        //.animation(isFaceUp ? Animation.linear(duration: 1).delay(0).repeatForever() : .default)
+        
+        
     }
     
     //MARK: - Drawing Constants
@@ -43,8 +57,8 @@ struct Cardify: ViewModifier {
 }
 
 extension View {
-    func cardify(isFaceUp: Bool, isSelected: Bool) -> some View {
-        self.modifier(Cardify(isFaceUp: isFaceUp, isSelected: isSelected))
+    func cardify(isFaceUp: Bool, isSelected: Bool, colour: ShapeColour) -> some View {
+        self.modifier(Cardify(isFaceUp: isFaceUp, isSelected: isSelected, colour: colour))
     }
 }
 

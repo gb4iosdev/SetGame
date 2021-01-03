@@ -24,53 +24,49 @@ struct SetGameView: View {
                     .aspectRatio(0.75, contentMode: .fit)
                     //.transition(.scale)
                     .transition(.offset(CGSize(width: CGFloat.random(in: -40...0)*20, height: CGFloat.random(in: -40...0)*20)))
-                    .animation(.linear(duration: 1))
+                    //.animation(.linear(duration: 1))
             }
             HStack {
                 Button(action: {
                     viewModel.checkAndDeal3()
                 }, label: {
                     Text("Deal 3")
-                        .font(.system(size: 18, weight: .medium, design: .default))
-                        .padding(.vertical, 5)
-                        .padding(.horizontal, 10)
+                        .setButtonTextStyle()
                         .background(!viewModel.deck.isEmpty ? Color.blue : Color.gray)
-                        .foregroundColor(.white)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
                 })
                 .disabled(viewModel.deck.isEmpty)
                 .opacity(!viewModel.deck.isEmpty ? 1.0 : 0.75)
                 Button(action: {
-                    withAnimation(.easeInOut(duration: 1)) {
+                    withAnimation(.easeInOut(duration: 3)) {
                         viewModel.restart()
                     }
                 }, label: {
                     Text("New Game")
-                        .font(.system(size: 18, weight: .medium, design: .default))
-                        .padding(.vertical, 5)
-                        .padding(.horizontal, 10)
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                    
+                        .setButtonTextStyle()
                 })
                 Button(action: {
                     viewModel.findASet()
                 }, label: {
                     Text("Find A Set")
-                        .font(.system(size: 18, weight: .medium, design: .default))
-                        .padding(.vertical, 5)
-                        .padding(.horizontal, 10)
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                        .setButtonTextStyle()
                     
+                })
+                Button(action: {
+                    withAnimation(.easeInOut(duration: 3)) {
+                        viewModel.flipCards()
+                    }
+                }, label: {
+                    Text("Flip")
+                        .setButtonTextStyle()
                 })
             }
         }
         .onAppear {
-            withAnimation(.easeInOut(duration: 1)) {
+            withAnimation(.easeInOut(duration: 2)) {
                 viewModel.dealInitialCards()
+            }
+            withAnimation(Animation.easeInOut(duration: 1).delay(1)) {
+                viewModel.flipCards()
             }
         }
         

@@ -48,6 +48,12 @@ struct SetGameModel {
         }
     }
     
+    mutating func flipCards() {
+        for i in 0..<dealtCards.count {
+            dealtCards[i].isFaceUp.toggle()
+        }
+    }
+    
     //*** Method only required to test card resizing UI - remove before completion ***//
     mutating func removeCards(_ numberToRemove: Int) {
         if dealtCards.count >= numberToRemove {
@@ -143,7 +149,6 @@ struct SetGameModel {
                         dealtCards[j].isPartOfSet = true
                         dealtCards[k].isSetTested = true
                         dealtCards[k].isPartOfSet = true
-                        print("Set found for cards Id's: \(dealtCards[i].id), \(dealtCards[j].id) & \(dealtCards[k].id)")
                         return
                     }
                 }
@@ -186,7 +191,7 @@ struct SetGameModel {
         let shading: ShadeType
         let colour: ShapeColour
         
-        var isFaceUp: Bool = true
+        var isFaceUp: Bool = false
         var isSelected: Bool = false
         var isPartOfSet: Bool = false
         var isSetTested: Bool = false

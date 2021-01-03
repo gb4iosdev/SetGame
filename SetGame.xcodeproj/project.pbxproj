@@ -24,6 +24,8 @@
 		86A96B42258A4F7C006A8A20 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86A96B41258A4F7C006A8A20 /* Preview Assets.xcassets */; };
 		86A96B4C258A5104006A8A20 /* SetGameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A96B4B258A5104006A8A20 /* SetGameModel.swift */; };
 		86D3C2A1259360840081EA08 /* SetCapsule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D3C2A0259360840081EA08 /* SetCapsule.swift */; };
+		86D5C3F1259F3ECA00DCA261 /* ShapeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D5C3F0259F3ECA00DCA261 /* ShapeView.swift */; };
+		86D5C3F6259FF14200DCA261 /* SetGameButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D5C3F5259FF14200DCA261 /* SetGameButton.swift */; };
 		86D806392592194500236321 /* Squiggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D806382592194500236321 /* Squiggle.swift */; };
 /* End PBXBuildFile section */
 
@@ -47,6 +49,8 @@
 		86A96B43258A4F7C006A8A20 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		86A96B4B258A5104006A8A20 /* SetGameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetGameModel.swift; sourceTree = "<group>"; };
 		86D3C2A0259360840081EA08 /* SetCapsule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCapsule.swift; sourceTree = "<group>"; };
+		86D5C3F0259F3ECA00DCA261 /* ShapeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeView.swift; sourceTree = "<group>"; };
+		86D5C3F5259FF14200DCA261 /* SetGameButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetGameButton.swift; sourceTree = "<group>"; };
 		86D806382592194500236321 /* Squiggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Squiggle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -78,7 +82,9 @@
 				869CF97F258C20700088B450 /* Grid.swift */,
 				8695994F258AE34200FB6751 /* GridLayout.swift */,
 				8695995B258AEEB500FB6751 /* CardView.swift */,
+				86D5C3F0259F3ECA00DCA261 /* ShapeView.swift */,
 				86959955258AEAE500FB6751 /* Cardify.swift */,
+				86D5C3F4259FF11900DCA261 /* Modifier */,
 				8662161F2590236400337DAF /* Shapes */,
 			);
 			path = View;
@@ -149,6 +155,14 @@
 				866FA17E2596CB9200C9864F /* ShapeColour.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		86D5C3F4259FF11900DCA261 /* Modifier */ = {
+			isa = PBXGroup;
+			children = (
+				86D5C3F5259FF14200DCA261 /* SetGameButton.swift */,
+			);
+			path = Modifier;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -232,7 +246,9 @@
 				8695995F258AEFA600FB6751 /* SetGame.swift in Sources */,
 				86A96B3B258A4F7A006A8A20 /* SetGameApp.swift in Sources */,
 				869CF984258C20E50088B450 /* Extensions.swift in Sources */,
+				86D5C3F1259F3ECA00DCA261 /* ShapeView.swift in Sources */,
 				86A96B4C258A5104006A8A20 /* SetGameModel.swift in Sources */,
+				86D5C3F6259FF14200DCA261 /* SetGameButton.swift in Sources */,
 				86959956258AEAE500FB6751 /* Cardify.swift in Sources */,
 				86959950258AE34200FB6751 /* GridLayout.swift in Sources */,
 				869CF980258C20700088B450 /* Grid.swift in Sources */,
