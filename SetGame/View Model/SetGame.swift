@@ -29,6 +29,10 @@ class SetGame: ObservableObject {
         model.numberOfPlayers
     }
     
+    var gameIsActive: Bool {
+        model.gameIsActive
+    }
+    
     func choose(card: SetGameModel.Card) {
         //Moved a part of this implementation out of the model in order to segregate the card in/out animation from
         //the selection and set-testing of cards which is not to be animated.
@@ -40,6 +44,7 @@ class SetGame: ObservableObject {
                 withAnimation(.easeOut(duration: 5)) {
                     model.removeSelectedFromPlay()
                     model.dealCards(3)
+                    model.setActivePlayer(nil)
                 }
             } else {    //If 3 cards have been selected that are not a set deselect those cards
                 model.deselectAll()
@@ -50,7 +55,19 @@ class SetGame: ObservableObject {
         model.markAndTest(card)
     }
     
-    func checkAndDeal3() {
+    func checkAndDeal3(forPlayer player: Int) {
+        //Record the players request to deal 3 (If a 2 player game):
+        if numberOfPlayers == 2 {
+            switch player {
+            case 1: model.playerSelectedDeal3(player: 1)
+            case 2: model.playerSelectedDeal3(player: 2)
+            default: return
+            }
+        }
+        
+        //If a 2 player game must have both player's consent
+        guard numberOfPlayers == 1 || (model.player1.selectedToDeal3 && model.player2.selectedToDeal3) else { return }
+
         if model.selectedCards.count == 3 {
             //If there is already a set made then this tap removes those cards and deals additional in:
             if model.makesASet(cards: model.selectedCards) {
@@ -63,6 +80,11 @@ class SetGame: ObservableObject {
         }
         withAnimation(.easeOut(duration: 5)) {
             model.dealCards(3)
+        }
+        
+        //Reset the player request to deal 3 if a 2 player game
+        if numberOfPlayers == 2 {
+            model.resetDeal3()
         }
     }
     
@@ -116,6 +138,14 @@ class SetGame: ObservableObject {
         }
     }
     
+    func playerSelectedDeal3(player: Int) -> Bool {
+        switch player {
+        case 1: return model.player1.selectedToDeal3
+        case 2: return model.player2.selectedToDeal3
+        default: return false
+        }
+    }
+    
     func scoreFor(_ player: Int) -> Int {
         switch player {
         case 1: return model.player1.score
@@ -124,11 +154,33 @@ class SetGame: ObservableObject {
         }
     }
     
-    func findASet() {
+    func playerHasCheated(_ player: Int) -> Bool {
+        switch player {
+        case 1: return model.player1.hasCheatedThisGame
+        case 2: return model.player2.hasCheatedThisGame
+        default: return false
+        }
+    }
+    
+    //Find a set for the player requesting to cheat & mark them as having used the cheat (even if the cards aren't found - bad luck)
+    func cheat(forPlayer player: Int) {
+        //First clear any selections
+        model.deselectAll()
         model.findASet()
+        model.markPlayerCheated(player: player)
     }
     
     func setNumberOfPlayers(to numberOfPlayers: Int) {
         model.setNumberOfPlayers(numberOfPlayers)
+    }
+    
+    func setActivePlayer(_ playerNumber: Int?) {
+        withAnimation(.easeOut(duration: 1)) {
+            model.setActivePlayer(playerNumber)
+        }
+    }
+    
+    func isCurrentlyActivePlayer(_ player: Int) -> Bool {
+        model.isCurrentlyActivePlayer(player)
     }
 }

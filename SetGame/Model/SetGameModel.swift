@@ -12,13 +12,17 @@ struct SetGameModel {
     private(set) var nextCard = 0               //Array position of the next card to be dealt - used to set card ID's
     private(set) var dealtCards: Array<Card>    //Dealt cards
     private(set) var numberOfPlayers = 1
-    private(set) var selectingPlayer: Player?   //The player doing the selecting in a 2 player game
+    private(set) var activePlayer: Int?      //The player doing the selecting in a 2 player game
     private(set) var player1 = Player()
     private(set) var player2 = Player()         //Ignored if a one player game
     
     
     var selectedCards: [Card] {
         return dealtCards.filter { $0.isSelected }
+    }
+    
+    var gameIsActive: Bool {
+        return numberOfPlayers == 1 || activePlayer != nil
     }
     
     init(shapes: [ShapeType], shades: [ShadeType], colours: [ShapeColour]) {
@@ -78,7 +82,10 @@ struct SetGameModel {
     
     mutating func markAndTest(_ card: Card) {
         
-        markSelected(card)
+        //Don't mark if a 2 player game without an active user
+        if !(numberOfPlayers == 2 && activePlayer == nil) {
+            markSelected(card)
+        }
         
         //If this is the third card selected: Time to test for a set
         if selectedCards.count == 3 {
@@ -104,6 +111,7 @@ struct SetGameModel {
         for i in 0..<dealtCards.count {
             dealtCards[i].isSelected = false
             dealtCards[i].isSetTested = false
+            dealtCards[i].isPartOfSet = false
         }
     }
     
@@ -140,6 +148,14 @@ struct SetGameModel {
         }
     }
     
+    mutating func markPlayerCheated(player: Int) {
+        switch player {
+        case 1: player1.hasCheatedThisGame = true
+        case 2: player2.hasCheatedThisGame = true
+        default: break
+        }
+    }
+    
     mutating func setNumberOfPlayers(_ numberOfPlayers: Int) {
         switch numberOfPlayers {
         case 1, 2:
@@ -157,6 +173,32 @@ struct SetGameModel {
         }
     }
     
+    mutating func playerSelectedDeal3(player: Int) {
+        switch player {
+        case 1: player1.selectedToDeal3.toggle()
+        case 2: player2.selectedToDeal3.toggle()
+        default: break
+        }
+    }
+    
+    mutating func resetDeal3() {
+        player1.selectedToDeal3 = false
+        player2.selectedToDeal3 = false
+    }
+    
+    mutating func setActivePlayer(_ playerNumber: Int?) {
+        activePlayer = playerNumber
+    }
+    
+    func isCurrentlyActivePlayer(_ player: Int) -> Bool {
+        if gameIsActive {
+            if let playerNumber = activePlayer, playerNumber == player {
+                return true
+            }
+        }
+        return false
+    }
+    
     //Determine if there is a set in the currently dealt cards
     mutating func findASet() {
         //Must have cards dealt
@@ -168,10 +210,13 @@ struct SetGameModel {
                     if makesASet(cards: [dealtCards[i], dealtCards[j], dealtCards[k]]) {
                         dealtCards[i].isSetTested = true
                         dealtCards[i].isPartOfSet = true
+                        dealtCards[i].isSelected = true
                         dealtCards[j].isSetTested = true
                         dealtCards[j].isPartOfSet = true
+                        dealtCards[j].isSelected = true
                         dealtCards[k].isSetTested = true
                         dealtCards[k].isPartOfSet = true
+                        dealtCards[k].isSelected = true
                         return
                     }
                 }
@@ -234,6 +279,8 @@ struct SetGameModel {
     
     struct Player {
         var selectedNewGame = false
+        var selectedToDeal3 = false
+        var hasCheatedThisGame = false
         var score: Int = 0
     }
 }

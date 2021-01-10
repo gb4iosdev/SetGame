@@ -14,10 +14,10 @@ struct ControlView: View {
     
     var body: some View {
         HStack {
-            Button(action: { viewModel.checkAndDeal3() },
+            Button(action: { viewModel.checkAndDeal3(forPlayer: playerNumber) },
                    label: { Text("Deal 3")
                     .setButtonTextStyle()
-                    .background(!viewModel.deck.isEmpty ? Color.blue : Color.gray)
+                    .background(viewModel.deck.isEmpty ? Color.gray : viewModel.playerSelectedDeal3(player: playerNumber) ? Color.gray : Color.blue)
                     .clipShape(RoundedRectangle(cornerRadius: 8)) }
             )
                 .disabled(viewModel.deck.isEmpty)
@@ -28,14 +28,16 @@ struct ControlView: View {
                     .background(viewModel.playerSelectedNewGame(player: playerNumber) ? Color.gray : Color.blue)
                     .clipShape(RoundedRectangle(cornerRadius: 8)) }
             )
-            Button(action: { viewModel.findASet() },
+            Button(action: { viewModel.cheat(forPlayer: playerNumber) },
                    label: { Text("Cheat")
                     .setButtonTextStyle()
-                    .background(Color.blue)
+                    .background(playerCanCheat() ? Color.blue : Color.gray)
                     .clipShape(RoundedRectangle(cornerRadius: 8)) }
             )
+            .disabled(!playerCanCheat())
+            
             if viewModel.numberOfPlayers == 2 {
-                Button(action: { },
+                Button(action: { viewModel.setActivePlayer(playerNumber) },
                        label: { Image(systemName: "eye")
                         .padding(4)
                         .setButtonTextStyle()
@@ -44,10 +46,15 @@ struct ControlView: View {
                        }
                 )
             }
+            
             Text("\(viewModel.scoreFor(playerNumber))")
                 .foregroundColor(.blue)
                 .font(.title)
         }
+    }
+    
+    func playerCanCheat() -> Bool {
+        viewModel.isCurrentlyActivePlayer(playerNumber) && !viewModel.playerHasCheated(playerNumber)
     }
 }
 

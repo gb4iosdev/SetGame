@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CardView: View {
     var card: SetGameModel.Card
-    let viewModel: SetGame
+    @ObservedObject var viewModel: SetGame
     
     var body: some View {
         GeometryReader { geometry in
@@ -39,7 +39,7 @@ struct CardView: View {
             )
                 .foregroundColor(.gray)
                 .opacity(card.isSetTested ? 0.4 : 0)
-            RoundedRectangle(cornerRadius: 10).stroke(Color.blue, lineWidth: 3)
+            RoundedRectangle(cornerRadius: 10).stroke(viewModel.gameIsActive ? Color.blue : Color.gray, lineWidth: 3)
         }
         .cardify(isFaceUp: card.isFaceUp, isSelected: card.isSelected, colour: card.colour)
         .onAppear {

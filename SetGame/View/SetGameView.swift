@@ -21,7 +21,9 @@ struct SetGameView: View {
             Grid(viewModel.dealtCards) { card in
                 CardView(card: card, viewModel: viewModel)
                     .onTapGesture {
-                        viewModel.choose(card: card)
+                        if viewModel.gameIsActive {
+                            viewModel.choose(card: card)
+                        }
                     }
                     .padding(5)
                     .aspectRatio(0.75, contentMode: .fit)
