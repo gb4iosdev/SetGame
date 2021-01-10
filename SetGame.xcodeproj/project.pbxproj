@@ -23,6 +23,7 @@
 		86A96B3F258A4F7C006A8A20 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86A96B3E258A4F7C006A8A20 /* Assets.xcassets */; };
 		86A96B42258A4F7C006A8A20 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86A96B41258A4F7C006A8A20 /* Preview Assets.xcassets */; };
 		86A96B4C258A5104006A8A20 /* SetGameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A96B4B258A5104006A8A20 /* SetGameModel.swift */; };
+		86C310DA25AA531400170672 /* ControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86C310D925AA531400170672 /* ControlView.swift */; };
 		86D3C2A1259360840081EA08 /* SetCapsule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D3C2A0259360840081EA08 /* SetCapsule.swift */; };
 		86D5C3F1259F3ECA00DCA261 /* ShapeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D5C3F0259F3ECA00DCA261 /* ShapeView.swift */; };
 		86D5C3F6259FF14200DCA261 /* SetGameButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D5C3F5259FF14200DCA261 /* SetGameButton.swift */; };
@@ -48,6 +49,7 @@
 		86A96B41258A4F7C006A8A20 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		86A96B43258A4F7C006A8A20 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		86A96B4B258A5104006A8A20 /* SetGameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetGameModel.swift; sourceTree = "<group>"; };
+		86C310D925AA531400170672 /* ControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlView.swift; sourceTree = "<group>"; };
 		86D3C2A0259360840081EA08 /* SetCapsule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCapsule.swift; sourceTree = "<group>"; };
 		86D5C3F0259F3ECA00DCA261 /* ShapeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeView.swift; sourceTree = "<group>"; };
 		86D5C3F5259FF14200DCA261 /* SetGameButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetGameButton.swift; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 			isa = PBXGroup;
 			children = (
 				86A96B3C258A4F7A006A8A20 /* SetGameView.swift */,
+				86C310D925AA531400170672 /* ControlView.swift */,
 				869CF97F258C20700088B450 /* Grid.swift */,
 				8695994F258AE34200FB6751 /* GridLayout.swift */,
 				8695995B258AEEB500FB6751 /* CardView.swift */,
@@ -238,6 +241,7 @@
 				866FA17F2596CB9200C9864F /* ShapeColour.swift in Sources */,
 				86D806392592194500236321 /* Squiggle.swift in Sources */,
 				8695995C258AEEB500FB6751 /* CardView.swift in Sources */,
+				86C310DA25AA531400170672 /* ControlView.swift in Sources */,
 				86959959258AECCE00FB6751 /* Diamond.swift in Sources */,
 				866FA1762596C68000C9864F /* Theme.swift in Sources */,
 				866FA17C2596CB4400C9864F /* ShadeType.swift in Sources */,

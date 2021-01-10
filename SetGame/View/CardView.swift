@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CardView: View {
     var card: SetGameModel.Card
+    let viewModel: SetGame
     
     var body: some View {
         GeometryReader { geometry in
@@ -21,7 +22,7 @@ struct CardView: View {
         ZStack {
             VStack {
                 Spacer()
-                ForEach(1..<card.number+1) { _ in
+                ForEach(1..<card.numberOfShapes+1) { _ in
                     Spacer(minLength: setSpacerHeight(size))
                     ShapeView(card: card, strokeWidth: strokeLineWidth(for: size))
                         //.rotation3DEffect(.degrees(card.isPartOfSet ? 360 : 0), axis: (x: 1.0, y: 0.0, z: 0.0))
@@ -32,7 +33,7 @@ struct CardView: View {
             }
             .padding(.horizontal, horizontalPadding(for: size))
             
-            Text("\(card.id)").foregroundColor(.primary)
+            Text("\(card.cardNum)").foregroundColor(.primary)
             Image(systemName: card.isPartOfSet ? "checkmark" : "xmark")
                 .font(.system(size: fontSize(for: size))
             )
@@ -41,10 +42,15 @@ struct CardView: View {
             RoundedRectangle(cornerRadius: 10).stroke(Color.blue, lineWidth: 3)
         }
         .cardify(isFaceUp: card.isFaceUp, isSelected: card.isSelected, colour: card.colour)
+        .onAppear {
+            withAnimation(Animation.easeInOut(duration: 0.5).delay(0.5+Double(viewModel.indexFor(card))*0.1)) {
+                viewModel.flip(card)
+            }
+        }
     }
     
     func setSpacerHeight(_ size: CGSize) -> CGFloat {
-        switch card.number {
+        switch card.numberOfShapes {
         case 1:
             return CGFloat(size.height / 3)
         case 2:
@@ -76,6 +82,7 @@ struct CardView_Previews: PreviewProvider {
     static var card = SetGameModel(shapes: theme.shapes, shades: theme.shades, colours: theme.colours).dealtCards.first
     
     static var previews: some View {
-        return CardView(card: card!)
+        let game = SetGame()
+        return CardView(card: card!, viewModel: game)
     }
 }

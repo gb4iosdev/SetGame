@@ -7,22 +7,26 @@
 
 import SwiftUI
 
-struct Cardify: ViewModifier {
+struct Cardify: AnimatableModifier {
     
-    //var rotation: Double
+    var rotation: Double
     
-    var isFaceUp: Bool
+    var isFaceUp: Bool {
+        rotation < 90
+    }
     var isSelected: Bool
     var colour: ShapeColour
     
-//    var animatableData: Double {
-//        get { rotation }
-//        set { rotation = newValue }
-//    }
+    var animatableData: Double {
+        get { rotation }
+        set { rotation = newValue }
+    }
     
-//    init(isFaceUp: Bool) {
-//        rotation = isFaceUp ? 0 : 180
-//    }
+    init(isFaceUp: Bool, isSelected: Bool, colour: ShapeColour) {
+        rotation = isFaceUp ? 0 : 180
+        self.isSelected = isSelected
+        self.colour = colour
+    }
     
     func body(content: Content) -> some View {
         ZStack {
@@ -30,25 +34,13 @@ struct Cardify: ViewModifier {
                 Group {
                     RoundedRectangle(cornerRadius: cornerRadius).fill(Color.white)
                     RoundedRectangle(cornerRadius: cornerRadius).stroke(lineWidth: isSelected ? 5 : 1)
-                        
                     content
-                    //.rotation3DEffect(Angle.degrees(180), axis: (x: 0, y: 1, z: 0))
-                        
                 }
-                
-//                .rotationEffect(.degrees(isFaceUp ? 270 : 0))
-//                .animation(Animation.linear(duration: 3).delay(0).repeatForever())
-                
             } else {
                 RoundedRectangle(cornerRadius: cornerRadius).fill(Theme.colourFor(colour))
-                    //.transition(.opacity)
-                    //.animation(.linear(duration: 3))
             }
         }
-        .rotation3DEffect(Angle.degrees(isFaceUp ? 180 : 0), axis: (x: 0, y: 1, z: 0))
-        //.animation(isFaceUp ? Animation.linear(duration: 1).delay(0).repeatForever() : .default)
-        
-        
+        .rotation3DEffect(Angle.degrees(rotation), axis: (x: 0, y: 1, z: 0))
     }
     
     //MARK: - Drawing Constants

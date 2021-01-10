@@ -10,66 +10,37 @@ import SwiftUI
 struct SetGameView: View {
     
     @ObservedObject var viewModel: SetGame
+    @State private var showingNumberOfPlayersSelection = false
     
     var body: some View {
         VStack {
-            Grid(viewModel.activeCards) { card in
-                CardView(card: card)
+            if viewModel.numberOfPlayers == 2 {
+                ControlView(viewModel: viewModel, playerNumber: 2)
+                    .rotationEffect(.degrees(180))
+            }
+            Grid(viewModel.dealtCards) { card in
+                CardView(card: card, viewModel: viewModel)
                     .onTapGesture {
-                        withAnimation(.easeOut(duration: 1)) {
-                            viewModel.choose(card: card)
-                        }
+                        viewModel.choose(card: card)
                     }
                     .padding(5)
                     .aspectRatio(0.75, contentMode: .fit)
-                    //.transition(.scale)
-                    .transition(.offset(CGSize(width: CGFloat.random(in: -40...0)*20, height: CGFloat.random(in: -40...0)*20)))
-                    //.animation(.linear(duration: 1))
+                    .transition(.asymmetric(insertion: AnyTransition.offset(offsetForIncomingCard(card: card)), removal: AnyTransition.offset(offsetForOutgoingCard(card: card))))
             }
-            HStack {
-                Button(action: {
-                    viewModel.checkAndDeal3()
-                }, label: {
-                    Text("Deal 3")
-                        .setButtonTextStyle()
-                        .background(!viewModel.deck.isEmpty ? Color.blue : Color.gray)
-                })
-                .disabled(viewModel.deck.isEmpty)
-                .opacity(!viewModel.deck.isEmpty ? 1.0 : 0.75)
-                Button(action: {
-                    withAnimation(.easeInOut(duration: 3)) {
-                        viewModel.restart()
-                    }
-                }, label: {
-                    Text("New Game")
-                        .setButtonTextStyle()
-                })
-                Button(action: {
-                    viewModel.findASet()
-                }, label: {
-                    Text("Find A Set")
-                        .setButtonTextStyle()
-                    
-                })
-                Button(action: {
-                    withAnimation(.easeInOut(duration: 3)) {
-                        viewModel.flipCards()
-                    }
-                }, label: {
-                    Text("Flip")
-                        .setButtonTextStyle()
-                })
-            }
+            ControlView(viewModel: viewModel, playerNumber: 1)
         }
+        .actionSheet(isPresented: $showingNumberOfPlayersSelection, content: {
+            ActionSheet(title: Text("Welcome to the SET GAME.  Select Number of Players"), buttons: [
+                .default(Text("1 Player")) {  },    //Default numberOFPlayers is already 1
+                .default(Text("2 Players")) { withAnimation { viewModel.setNumberOfPlayers(to: 2) } }
+            ])
+        })
         .onAppear {
             withAnimation(.easeInOut(duration: 2)) {
                 viewModel.dealInitialCards()
             }
-            withAnimation(Animation.easeInOut(duration: 1).delay(1)) {
-                viewModel.flipCards()
-            }
+            showingNumberOfPlayersSelection = true
         }
-        
     }
 }
 
@@ -77,5 +48,16 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         let game = SetGame()
         SetGameView(viewModel: game)
+    }
+}
+
+extension SetGameView {
+    func offsetForIncomingCard(card: SetGameModel.Card) -> CGSize {
+        let cardIndex = viewModel.indexFor(card)
+        return CGSize(width: -40-cardIndex*40, height: -40-cardIndex*40)
+    }
+    func offsetForOutgoingCard(card: SetGameModel.Card) -> CGSize {
+        let cardIndex = viewModel.indexFor(card)
+        return CGSize(width: 400+(viewModel.dealtCards.count - cardIndex)*40, height: 600+(viewModel.dealtCards.count - cardIndex)*40)
     }
 }

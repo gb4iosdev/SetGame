@@ -14,14 +14,12 @@ struct SetGameButton: ViewModifier {
             .font(.system(size: 18, weight: .medium, design: .default))
             .padding(.vertical, 5)
             .padding(.horizontal, 10)
-            .background(Color.blue)
             .foregroundColor(.white)
-            .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 }
 
 extension View {
     func setButtonTextStyle() -> some View {
-        self.modifier(SetGameButton())
+            self.modifier(SetGameButton())
     }
 }

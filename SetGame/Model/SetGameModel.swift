@@ -11,6 +11,11 @@ struct SetGameModel {
     private(set) var deck: Array<Card>          //Entire deck of 81 cards
     private(set) var nextCard = 0               //Array position of the next card to be dealt - used to set card ID's
     private(set) var dealtCards: Array<Card>    //Dealt cards
+    private(set) var numberOfPlayers = 1
+    private(set) var selectingPlayer: Player?   //The player doing the selecting in a 2 player game
+    private(set) var player1 = Player()
+    private(set) var player2 = Player()         //Ignored if a one player game
+    
     
     var selectedCards: [Card] {
         return dealtCards.filter { $0.isSelected }
@@ -18,15 +23,15 @@ struct SetGameModel {
     
     init(shapes: [ShapeType], shades: [ShadeType], colours: [ShapeColour]) {
         self.deck = [Card]()
-        var cardId: Int = 0
+        var cardNum: Int = 0
         
         //Build the deck of 81 cards
         for i in 1...3 {
             for shape in shapes {
                 for shade in shades {
                     for colour in colours {
-                        cardId += 1
-                        let card = Card(id: cardId, number: i, shape: shape, shading: shade, colour: colour)
+                        cardNum += 1
+                        let card = Card(cardNum: cardNum, numberOfShapes: i, shape: shape, shading: shade, colour: colour)
                         deck.append(card)
                     }
                 }
@@ -48,10 +53,18 @@ struct SetGameModel {
         }
     }
     
-    mutating func flipCards() {
+    mutating func flipAllCardsUp() {
         for i in 0..<dealtCards.count {
-            dealtCards[i].isFaceUp.toggle()
+            dealtCards[i].isFaceUp = true
         }
+    }
+    
+    mutating func flip(_ card: Card) {
+        dealtCards[dealtCards.firstIndex(matching: card)!].isFaceUp.toggle()
+    }
+    
+    func indexFor(_ card: Card) -> Int {
+        dealtCards.firstIndex(matching: card)!
     }
     
     //*** Method only required to test card resizing UI - remove before completion ***//
@@ -63,17 +76,7 @@ struct SetGameModel {
         }
     }
     
-    mutating func choose(card: Card) {
-        
-        if selectedCards.count == 3 {
-            //If there is already a set made then this tap removes those cards and deals additional in:
-            if makesASet(cards: selectedCards) {
-                removeSelectedFromPlay()
-                dealCards(3)
-            } else {    //If 3 cards have been selected that are not a set deselect those cards
-                deselectAll()
-            }
-        }
+    mutating func markAndTest(_ card: Card) {
         
         markSelected(card)
         
@@ -104,16 +107,19 @@ struct SetGameModel {
         }
     }
     
+    //Remove cards that have been selected from the Dealt Cards
     mutating func removeSelectedFromPlay() {
-        var selectedCardIds = [Int]()
-        for card in selectedCards {
-            selectedCardIds.append(card.id)
-        }
         for card in dealtCards {
-            if selectedCardIds.contains(card.id) {
-                dealtCards.remove(at: dealtCards.firstIndex(matching: card)!)
+            if card.isSelected == true {
+                let index = dealtCards.firstIndex(matching: card)!
+                dealtCards[index].isFaceUp = false
+                dealtCards.remove(at: index)
             }
         }
+    }
+    
+    mutating func removeAllDealt() {
+        dealtCards.removeAll()
     }
     
     mutating func markSelected(_ card: Card) {
@@ -131,6 +137,23 @@ struct SetGameModel {
     mutating func markSelectedCards(isSetTested: Bool) {
         for card in selectedCards {
             dealtCards[dealtCards.firstIndex(matching: card)!].isSetTested = isSetTested
+        }
+    }
+    
+    mutating func setNumberOfPlayers(_ numberOfPlayers: Int) {
+        switch numberOfPlayers {
+        case 1, 2:
+            self.numberOfPlayers = numberOfPlayers
+        default:
+            return
+        }
+    }
+    
+    mutating func playerSelectedNewGame(player: Int) {
+        switch player {
+        case 1: player1.selectedNewGame.toggle()
+        case 2: player2.selectedNewGame.toggle()
+        default: break
         }
     }
     
@@ -161,7 +184,7 @@ struct SetGameModel {
         guard cards.count == 3 else { return false }
         
         //They all have the same number or have three different numbers.
-        guard featureAllSameOrDifferent(cards[0].number, cards[1].number, cards[2].number) else {
+        guard featureAllSameOrDifferent(cards[0].numberOfShapes, cards[1].numberOfShapes, cards[2].numberOfShapes) else {
             return false }
         
         //They all have the same shape or have three different shapes.
@@ -185,8 +208,9 @@ struct SetGameModel {
     }
     
     struct Card: Identifiable {
-        let id: Int
-        let number: Int     //Number of Shapes
+        let id = UUID()
+        let cardNum: Int    //card number in the deck
+        let numberOfShapes: Int     //Number of Shapes
         let shape: ShapeType
         let shading: ShadeType
         let colour: ShapeColour
@@ -195,15 +219,21 @@ struct SetGameModel {
         var isSelected: Bool = false
         var isPartOfSet: Bool = false
         var isSetTested: Bool = false
+
         
         func description() -> String {
             return """
                 Card: \(self.id)
-                Number: \(self.number)
+                Number: \(self.numberOfShapes)
                 Shape: \(self.shape)
                 Shading: \(self.shading)
                 Colour: \(self.colour)
             """
         }
+    }
+    
+    struct Player {
+        var selectedNewGame = false
+        var score: Int = 0
     }
 }
