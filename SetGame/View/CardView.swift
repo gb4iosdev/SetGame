@@ -13,20 +13,18 @@ struct CardView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            body(for: geometry.size)
+            body(for: geometry.size, frame: geometry.frame(in: .global))
         }
     }
     
     @ViewBuilder
-    private func body(for size: CGSize) -> some View {
+    private func body(for size: CGSize, frame: CGRect) -> some View {
         ZStack {
             VStack {
                 Spacer()
                 ForEach(1..<card.numberOfShapes+1) { _ in
                     Spacer(minLength: setSpacerHeight(size))
                     ShapeView(card: card, strokeWidth: strokeLineWidth(for: size))
-                        //.rotation3DEffect(.degrees(card.isPartOfSet ? 360 : 0), axis: (x: 1.0, y: 0.0, z: 0.0))
-                        //.animation(Animation.linear(duration: 1))
                     Spacer(minLength: setSpacerHeight(size))
                 }
                 Spacer()

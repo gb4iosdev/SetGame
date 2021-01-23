@@ -13,35 +13,46 @@ struct SetGameView: View {
     @State private var showingNumberOfPlayersSelection = false
     
     var body: some View {
-        VStack {
-            if viewModel.numberOfPlayers == 2 {
-                ControlView(viewModel: viewModel, playerNumber: 2)
-                    .rotationEffect(.degrees(180))
-            }
-            Grid(viewModel.dealtCards) { card in
-                CardView(card: card, viewModel: viewModel)
-                    .onTapGesture {
-                        if viewModel.gameIsActive {
-                            viewModel.choose(card: card)
+        ZStack {
+            VStack {
+                if viewModel.numberOfPlayers == 2 {
+                    ControlView(viewModel: viewModel, playerNumber: 2)
+                        .rotationEffect(.degrees(180))
+                }
+                Grid(viewModel.dealtCards) { card in
+                    CardView(card: card, viewModel: viewModel)
+                        .onTapGesture {
+                            if viewModel.gameIsActive {
+                                viewModel.choose(card: card)
+                            }
                         }
-                    }
-                    .padding(5)
-                    .aspectRatio(0.75, contentMode: .fit)
-                    .transition(.asymmetric(insertion: AnyTransition.offset(offsetForIncomingCard(card: card)), removal: AnyTransition.offset(offsetForOutgoingCard(card: card))))
+                        .padding(5)
+                        .aspectRatio(0.75, contentMode: .fit)
+                        .transition(.asymmetric(insertion: AnyTransition.offset(offsetForIncomingCard(card: card)), removal: AnyTransition.offset(offsetForOutgoingCard(card: card))))
+                }
+                ControlView(viewModel: viewModel, playerNumber: 1)
             }
-            ControlView(viewModel: viewModel, playerNumber: 1)
-        }
-        .actionSheet(isPresented: $showingNumberOfPlayersSelection, content: {
-            ActionSheet(title: Text("Welcome to the SET GAME.  Select Number of Players"), buttons: [
-                .default(Text("1 Player")) {  },    //Default numberOFPlayers is already 1
-                .default(Text("2 Players")) { withAnimation { viewModel.setNumberOfPlayers(to: 2) } }
-            ])
-        })
-        .onAppear {
-            withAnimation(.easeInOut(duration: 2)) {
-                viewModel.dealInitialCards()
+            .actionSheet(isPresented: $showingNumberOfPlayersSelection, content: {
+                ActionSheet(title: Text("Welcome to the SET GAME.  Select Number of Players"), buttons: [
+                    .default(Text("1 Player")) {
+                        viewModel.setActivePlayer(1)
+                        viewModel.startBonusPointsTimer()
+                    },    //Default numberOFPlayers is already 1
+                    .default(Text("2 Players")) { withAnimation {
+                        viewModel.setNumberOfPlayers(to: 2)
+                        viewModel.startBonusPointsTimer()
+                    } }
+                ])
+            })
+            .onAppear {
+                withAnimation(.easeInOut(duration: 2)) {
+                    viewModel.dealInitialCards()
+                }
+                showingNumberOfPlayersSelection = true
             }
-            showingNumberOfPlayersSelection = true
+            if viewModel.setNotNoticed {
+                NoticeView(viewModel: viewModel)
+            }
         }
     }
 }

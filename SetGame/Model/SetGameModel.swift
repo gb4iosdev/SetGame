@@ -5,17 +5,17 @@
 //  Created by Gavin Butler on 16-12-2020.
 //
 
-import SwiftUI
+import Foundation
 
 struct SetGameModel {
     private(set) var deck: Array<Card>          //Entire deck of 81 cards
     private(set) var nextCard = 0               //Array position of the next card to be dealt - used to set card ID's
     private(set) var dealtCards: Array<Card>    //Dealt cards
     private(set) var numberOfPlayers = 1
-    private(set) var activePlayer: Int?      //The player doing the selecting in a 2 player game
+    private(set) var activePlayer: Int?         //The player doing the selecting in a 2 player game
     private(set) var player1 = Player()
     private(set) var player2 = Player()         //Ignored if a one player game
-    
+    private(set) var setNotNoticed = false     //Captured to communicate via alert when player points have reduced when dealing again (ie set found)
     
     var selectedCards: [Card] {
         return dealtCards.filter { $0.isSelected }
@@ -81,6 +81,9 @@ struct SetGameModel {
     }
     
     mutating func markAndTest(_ card: Card) {
+        
+        //Don't proceed if the number of selected cards is already 3 (which can happen in 2 player scenario)
+        guard selectedCards.count < 3 else { return }
         
         //Don't mark if a 2 player game without an active user
         if !(numberOfPlayers == 2 && activePlayer == nil) {
@@ -199,29 +202,44 @@ struct SetGameModel {
         return false
     }
     
+    mutating func addPoints(to player: Int, points: Int) {
+        switch player {
+        case 1: player1.score += points
+        case 2: player2.score += points
+        default: break
+        }
+    }
+    
+    mutating func setSetNotNoticed(to value: Bool) {
+        setNotNoticed = value
+    }
+    
     //Determine if there is a set in the currently dealt cards
-    mutating func findASet() {
+    mutating func foundASet(withMarking: Bool = true) -> Bool {
         //Must have cards dealt
-        guard dealtCards.count >= 3 else { return }
+        guard dealtCards.count >= 3 else { return false }
         
         for i in 0..<dealtCards.count-2 {
             for j in i+1..<dealtCards.count-1 {
                 for k in j+1..<dealtCards.count {
                     if makesASet(cards: [dealtCards[i], dealtCards[j], dealtCards[k]]) {
-                        dealtCards[i].isSetTested = true
-                        dealtCards[i].isPartOfSet = true
-                        dealtCards[i].isSelected = true
-                        dealtCards[j].isSetTested = true
-                        dealtCards[j].isPartOfSet = true
-                        dealtCards[j].isSelected = true
-                        dealtCards[k].isSetTested = true
-                        dealtCards[k].isPartOfSet = true
-                        dealtCards[k].isSelected = true
-                        return
+                        if withMarking {
+                            dealtCards[i].isSetTested = true
+                            dealtCards[i].isPartOfSet = true
+                            dealtCards[i].isSelected = true
+                            dealtCards[j].isSetTested = true
+                            dealtCards[j].isPartOfSet = true
+                            dealtCards[j].isSelected = true
+                            dealtCards[k].isSetTested = true
+                            dealtCards[k].isPartOfSet = true
+                            dealtCards[k].isSelected = true
+                        }
+                        return true
                     }
                 }
             }
         }
+        return false
     }
     
     func makesASet(cards: [Card]) -> Bool {
@@ -264,7 +282,6 @@ struct SetGameModel {
         var isSelected: Bool = false
         var isPartOfSet: Bool = false
         var isSetTested: Bool = false
-
         
         func description() -> String {
             return """
